@@ -1,0 +1,12 @@
+name: Chapter5
+title: Chapter5
+username:
+account: kreuning
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 1497324
+bundleId: 2609636
+url: https://kreuning.shinyapps.io/Chapter5/
+when: 1574429505.95855
+asMultiple: FALSE
+asStatic: FALSE

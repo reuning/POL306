@@ -1,0 +1,13 @@
+name: chapter3
+title: chapter3
+username:
+account: kreuning
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 974546
+bundleId: 2468389
+url: https://kreuning.shinyapps.io/chapter3/
+when: 1570191922.25309
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: state_cig.csv

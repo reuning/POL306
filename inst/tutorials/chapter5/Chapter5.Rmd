@@ -1,0 +1,229 @@
+---
+title: Logistic Regression
+description: ""
+output:
+  learnr::tutorial:
+  theme: sandstone
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(testwhat)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+tutorial_options(exercise.checker = testwhat::testwhat_learnr)
+
+df <- read.csv("https://www.kevinreuning.com/assets/tax_supp.csv")
+
+```
+
+## Dataset Info
+
+In this assignment we will be using a new dataset. Our main focus will be on what led voters to support a millionaire tax. The unit of analysis is the voter. The data comes from the 2016 ANES and has the following variables:
+
+- `mill_tax`: A dummy variable indicating if someone supports a 'millionaire tax', 1 is they support the tax and 0 is that they are opposed. The question they were asked was: "Do you favor, oppose, or neither favor nor oppose increasing income taxes on people making over one million dollars per year?" Those who selected neither were recorded as missing. 
+- `male`: Whether the voter is male. 
+- `college`: Whether the voter has a college degree.
+- `white`: Whether the voter is white.
+- `pid7`: The partisanship of the voter, this is a 7 point scale that goes from 'Strong Democrat' to 'Strong Republican'. This is string variable. 
+- `pid7_interv`: The interval version of `pid7`, 1 is someone who is a 'Strong Democrat' and 7 is 'Strong Republican' 
+
+
+## Logistic Regression
+
+The function we use to estimate a logistic regression is `glm()` (this stands for generalized linear model). It can be used to estimate a variety of models To indicate the specific type of model we use the family argument, and for logistic regression we set it to `binomial`. Below shows an example:
+
+```
+mod <- glm(var1 ~ var2 + var3 + var4, data=data.frame, family=binomial)
+```
+This should look familiar, all that has changed is `glm` at the beginning and the family argument at the end. 
+
+**Instructions**:
+
+Lets start just by estimating a simple logistic regression with `pid7` as our only independent variable. `pid7` is technically an ordinal variable with 7 different categories. For the rest of the assignment we are going to treat it as a continuous variable, take a look at what the coefficients are. Do you think it is a bad idea to do this? 
+
+
+```{r logit, exercise=TRUE}
+names(df)
+```
+
+```{r logit-solution, eval=FALSE}
+df <- read.csv("https://www.kevinreuning.com/assets/tax_supp.csv")
+
+names(df)
+
+mod <- glm(mill_tax~pid7, data=df, family=binomial)
+summary(mod)
+
+```
+
+```{r logit-check, eval=FALSE}
+ex() %>% {
+  check_function(., "glm" ) %>%{
+    check_arg(., "formula") %>% check_equal()
+    check_arg(., "family") %>% check_equal()
+  }
+  check_function(., "summary")
+}
+```
+
+
+
+## Plotting Predictions
+
+Now we are going to look at predictions to figure out the effects of partisanship on opinions over the millionaire tax. We are going to estimate model with `pid7_interv` as our independent variables (the interval version of `pid7`). Then we are going to plot the predict probability of supporting millionaire tax
+
+To calculate these particular predictions, we will use the coefficients from our model and multiply/add them. Remember to access your coefficients you use `coef(mod)`. You can access particular coefficients like:
+
+- `coef(mod)[1]` - Will return the intercept. 
+- `coef(mod)[2]` - Will return the first actual coefficient (in this case the coefficient on `pid7_interv`)
+
+To calculate predictions from our models we will do something like:
+
+```
+preds <- coef(mod)[1] + coef(mod)[2] * X
+```
+
+Here `X` is some level or levels of our first IV. These predictions will be on log-odds scales, to convert it to a probability statement we need one more function: `plogis(preds)`. 
+
+**Instructions**:
+
+You are going to make a plot of the probability of supporting the tax across the range of partisanship. To plot this you will calculate the predicts as it says above and then stick that into `plot()`, you can set `type='l'` to create a line plot instead of points. Our partisanship score goes from 1 to 7, and we can automatically make a vector that goes from 1 to 7 with `1:7`.
+
+```{r pred, exercise=TRUE}
+names(df)
+```
+
+```{r pred-solution, eval=FALSE}
+df <- read.csv("https://www.kevinreuning.com/assets/tax_supp.csv")
+
+names(df)
+
+mod <- glm(mill_tax~pid7_interv, data=df, family=binomial)
+preds <- coef(mod)[1] + coef(mod)[2] * 1:7
+plot(y=plogis(preds), x=1:7, type='l')
+
+
+```
+
+```{r pred-check, eval=FALSE}
+ex() %>% {
+  check_function(., "glm" ) %>%{
+    check_arg(., "formula") %>% check_equal()
+    check_arg(., "family") %>% check_equal()
+  }
+  check_function(., "plot") %>% {
+    check_arg(., "x") %>% check_equal()
+    check_arg(., "y") %>% check_equal()
+  }
+  check_function(., "plogis") %>% check_arg("q") %>% check_equal()
+}
+```
+
+
+
+
+
+## MV Predictions
+
+We can also try seeing what happens as other variables vary. We can do this in particular by adding additional lines to our plot. To do this we use the `lines()` function, which acts a lot like `plot()`. If we call it after we call `plot()` though it will add a line to the plot we already have:
+
+```
+plot(y=pred, x=1:7)
+lines(y=pred2, x=1:7, lty=2)
+```
+
+This adds a second line, and makes it easier to see the line by setting it as a different line type. 
+
+**Instructions**:
+
+Add `male` as another independent variable. To see how it effects the probability of someone supporting a millionaires tax plot two prediction lines: one showing predictions for women and the other showing predictions for men (both should be across the partisan values). 
+
+*Note:* You can change the range of the y axis in a plot by setting `ylim=c(0,1)` in your `plot()` call. 
+
+```{r predmv, exercise=TRUE}
+names(df)
+```
+
+```{r predmv-solution, eval=FALSE}
+df <- read.csv("https://www.kevinreuning.com/assets/tax_supp.csv")
+
+names(df)
+
+mod <- glm(mill_tax~pid7_interv + male, data=df, family=binomial)
+pred1 <- coef(mod)[1] + coef(mod)[2] * 1:7
+pred2 <- coef(mod)[1] + coef(mod)[2] * 1:7 + coef(mod)[3]
+
+plot(y=plogis(pred1), x=1:7, type="l", ylim=c(0, 1))
+lines(y=plogis(pred2), x=1:7, lty=2)
+
+
+```
+
+```{r predmv-check, eval=FALSE}
+ex() %>% {
+  check_function(., "glm" ) %>%{
+    check_arg(., "formula") %>% check_equal()
+    check_arg(., "family") %>% check_equal()
+  }
+  check_function(., "plot") %>% {
+    check_arg(., "x") %>% check_equal()
+    check_arg(., "y") %>% check_equal()
+  }
+  check_function(., "plogis") %>% check_arg("q") %>% check_equal()
+  check_function(., "lines")
+}
+```
+
+
+
+
+
+
+
+
+## Observed Differences
+
+We can also look the observed values discrete differences of a variable. Remember the idea here is that we are looking at how varying a variable changes predictions for those actually in our data. We then look at the mean difference in predictions across the whole dataset. 
+
+**Instructions**:
+
+Starting again with the model you have, lets look at the effect of sex on our probabilities. To do this we are going to calculate the predicted values for everyone in our dataset if they were male and then the predicted values if they were female. Finally you will convert them to probabilities (`plogis()`) and then calculate the average difference. 
+
+*Note:* Remember you can access a variable from a dataset with `df$pid7_interv`. 
+
+```{r diff, exercise=TRUE}
+names(df)
+mod <- glm(mill_tax~pid7_interv + male, data=df, family=binomial)
+
+
+```
+
+```{r diff-solution, eval=FALSE}
+df <- read.csv("https://www.kevinreuning.com/assets/tax_supp.csv")
+
+names(df)
+
+mod <- glm(mill_tax~pid7_interv + male, data=df, family=binomial)
+pred1 <- coef(mod)[1] + coef(mod)[2] * df$pid7_interv
+pred2 <- coef(mod)[1] + coef(mod)[2] * df$pid7_interv + coef(mod)[3]
+
+mean(plogis(pred1) - plogis(pred2), na.rm=T)
+
+
+```
+
+```{r diff-check, eval=FALSE}
+ex() %>% {
+  check_function(., "plogis") 
+  check_function(., "mean")
+}
+```
+
+
+
+
+
+
+
+

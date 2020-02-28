@@ -1,0 +1,110 @@
+---
+title: "Hypothesis Testing and Residuals"
+description: ""
+output:
+  learnr::tutorial:
+    theme: sandstone
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(testwhat)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+tutorial_options(exercise.checker = testwhat::testwhat_learnr)
+df <- read.csv("https://www.kevinreuning.com/assets/state_cig.csv")
+
+```
+
+
+
+## Confidence Intervals
+
+R has a simple function called `confint()` that will calculate the confidence interval of all the variables in your model. It defaults to a 95% confidence interval but you can change that using `level = ` in the function call. 
+
+**Instructions**:
+
+We are going to recreate the model we've been using looking at the relationship between cigarette taxes and the percentage of liberals in a state. Remember, cigarette taxes is the DV and percentage liberals in the state is the IV. 
+
+Once you have the model estimated you will then calculate the confidence interval. 
+
+```{r linear-2, exercise=TRUE}
+names(df)
+
+```
+
+```{r linear-2-solution, eval=FALSE}
+df <- read.csv("https://www.kevinreuning.com/assets/state_cig.csv")
+
+names(df)
+
+mod <- lm(cig_tax~liberal, data=df)
+confint(mod)
+
+```
+
+```{r linear-2-check, eval=FALSE}
+ex() %>% {
+  check_function(., "lm" ) %>% check_arg("formula") %>% check_equal()
+  check_function(., "confint")
+}
+
+```
+
+
+
+
+## Plotting Residuals
+
+In the last assignment we saw how to plot residuals using `plot(mod$residuals)`. This plots them on the Y axis with the observation number on the X axis. We also are interested in plotting our residuals as a function of the the predicted value. This can be accomplished by using `mod$fitted.values`.  
+
+**Instructions**:
+
+Still using the same model, look at the residuals. We want to do two things:
+1) Look at the residuals just by observation number.
+2) Look at the residuals compared to the predicted value. 
+
+```{r resids, exercise=TRUE}
+names(df)
+mod <- lm(cig_tax~liberal, data=df)
+
+```
+
+```{r resids-solution, eval=FALSE}
+df <- read.csv("https://www.kevinreuning.com/assets/state_cig.csv")
+
+names(df)
+
+mod <- lm(cig_tax~liberal, data=df)
+plot(mod$residuals)
+plot(y=mod$residuals, x=mod$fitted.values)
+```
+
+```{r resids-check, eval=FALSE}
+ex() %>% {
+  check_function(., "plot", index=1 ) %>% check_arg("x") %>% check_equal
+  check_function(., "plot", index=2 ) %>% {
+    check_arg(., "x") %>% check_equal
+    check_arg(., "y") %>% check_equal
+  }
+
+}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

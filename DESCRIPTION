@@ -1,0 +1,20 @@
+Package: POL306
+Title: POL 306 Applied Research Methods at Miami 
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Kevin",
+           family = "Reuning",
+           role = c("aut", "cre"),
+           email = "kevin.reuning@gmail.com",
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: R Tutorial for POL 306 Applied Research Methods at Miami University.
+License: CCBY-4.0
+Encoding: UTF-8
+LazyData: true
+Suggests: 
+    learnr (>= 0.9.2.1)
+Imports: 
+  testwhat
+Remotes:
+  datacamp/testwhat
+RoxygenNote: 6.1.1

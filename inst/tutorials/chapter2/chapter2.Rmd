@@ -1,0 +1,413 @@
+---
+title: 'Functions, Central Tendencies, and More'
+description: ""
+output:
+ learnr::tutorial:
+   theme: sandstone
+runtime: shiny_prerendered
+---
+
+
+```{r setup, include=FALSE}
+library(learnr)
+library(testwhat)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+tutorial_options(exercise.checker = testwhat::testwhat_learnr)
+```
+
+
+## Functions
+
+Along with variables, R has **functions** which take in one or more variables and return a result (just like a function in math). There are thousands of functions that have been written for R, and you can download more of them for specialized tasks as well. Right now we are just going to see how functions work, and how to find out more about them.
+
+We are going to start by looking at just two functions: `sum`, and `sort`. Each function is run by writing `function(x)` where `function` is the name of the function and `x` is the variable you are running it on. You can also save the output of a function as a new variable just like you would store another variable: `y <- function(x)`
+
+The functions that we will use here are relatively simple:
+- sum: returns the summation of all the numbers in the vector you give it. 
+- sort: returns the vector you gave it but reordered from highest to lowest.
+
+*One other thing:* The `#` is a way of telling R to ignore something. I use these to leave comments in code. Anything preceded by `#` will be ignored by R. 
+
+**Instructions**:
+
+1. Start by defining a variable called `x` that is a vector that contains the numbers 12, 4, 3, 2, 5, and -4. 
+2. Next calculate the sum of all the numbers in `x` and store it as `tot`. 
+3. Finally use the `sort` function to rewrite `x` so that it is in order from highest to lowest (you will have to save this new `x` overtop of the old `x`).
+
+
+```{r functions, exercise=TRUE}
+##### Remember to run a function on something you write it like:
+sort(c(4,2,5,1,2))
+#### You can run functions on stored variables or directly on the numbers like I did above
+```
+
+```{r functions-solution, eval=FALSE}
+x <- c(12,4,3,2,5,-4)
+tot <- sum(x)
+x <- sort(x)
+```
+
+```{r functions-check, eval=FALSE}
+ex() %>% {
+  check_object(., "x") %>% check_equal()
+  check_object(., "tot") %>% check_equal()
+  check_function(., "sum")
+  check_function(., "sort")
+}
+```
+
+## Getting help with functions
+
+In general R is not often very helpful (at least when it produces errors). It can be helpful though if you need to understand **what** you can do with a function. R has its own baked in help that you can access by running `?function` where function is the function you want help about. This will open up something (if you are in RStudio it will open a page on the lower right) that explains:
+
+- A short description of the function
+- How you can call the function (this sometimes includes related functions as well), including how to set different options (arguments)
+- A description of the different options that the function has. These are called arguments and they can include a lot of different things depending on the function.
+- A more detailed description of the function
+- Examples of how the function is used (not often helpful examples though)
+
+**Instructions**:
+
+This will be a simple assignment. All I want is for you to take a vector used in the previous assignment and sort it but instead of having it go from low to high it should go from high to low. To do this you'll need to look up the help page of sort and look for an argument that you think will change the direction of the ordering.
+
+Note that a lot of arguments take the form of `something = FALSE` this means that the default is for this argument to be off. To turn it on, change it to `something = TRUE` when you call it.
+
+
+```{r help, exercise=TRUE}
+### to start, lets look at another function, seq
+### seq creates a sequence of a numbers as a vector
+seq(1, 10) ## will output a sequence from 1 to 10
+
+### but what if you want to create one with only even numbers?
+?seq #calls up the help 
+
+### you should see that seq has several arguments and several related functions
+### right now we are using just from and to in the seq call but we aren't 
+### explicity naming them. There is also an argument called by 
+### this changes the increment of the sequence so if we do
+seq(2, 10, by=2)
+
+### we get only even numbers from 2 to 10
+### you can also make all arguments explicit:
+seq(from=2, to=10, by=10)
+
+### now take x from the previous example and sort it in the opposite direction
+x <- c(12,4,3,2,5,-4)
+```
+
+
+```{r help-solution, eval=FALSE}
+### to start, lets look at another function, seq
+### seq creates a sequence of a numbers as a vector
+seq(1, 10) ## will output a sequence from 1 to 10
+
+### but what if you want to create one with only even numbers?
+?seq #calls up the help 
+
+### you should see that seq has several arguments and several related functions
+### right now we are using just from and to in the seq call but we aren't 
+### explicity naming them. There is also an argument called by 
+### this changes the increment of the sequence so if we do
+seq(2, 10, by=2)
+
+### we get only even numbers from 2 to 10
+### you can also make all arguments explicit:
+seq(from=2, to=10, by=10)
+
+### now take x from the previous example and sort it in the opposite direction
+x <- c(12,4,3,2,5,-4)
+sort(x, decreasing=T)
+```
+
+```{r help-check, eval=FALSE}
+ex() %>% check_function("sort") %>% check_arg("decreasing") %>% check_equal()
+```
+
+
+
+
+## Variables and Datasets
+
+We usually do not build all of our variables by hand. Instead we use saved files to import them as datasets. 
+
+Datasets are like excel sheets where each column is a different variable and each row is a different unit. Often you will actually load a dataset from an excel file or from a "csv" file. You will have to store the dataset as its own "variable" just like you stored the numbers, strings, and vectors previously. Then you will be able to access different variables and units on the dataset. 
+
+To load a dataset you need to use the function: `read.csv `this takes the name of the file as an argument and returns the dataset.
+
+Once you load the dataset you can access particular variables in it using `$variablename`. If you had a variable named gender in the dataset df then you'd access it by calling `df$gender`
+
+**Instructions**:
+
+There is a dataset named `"state_party.csv"` which contains data for 2010 on the estimated proportion of Republican and Democratic voters as well a the percentage of Democrats and Republicans in the state legislature (just the lower chamber). 
+
+You are going to load it, and then calculate the sum of the democrat variable: `democrat`
+
+
+```{r df-setup}
+tmp.df <- read.csv("https://www.kevinreuning.com/assets/state_party.csv")
+
+write.csv(tmp.df, "state_party.csv", row.names=F)
+rm(list=ls())
+```
+
+
+```{r df, exercise=TRUE, exercise.setup="df-setup"}
+### The file is named "state_party.csv" so to load it use read.csv("state_party.csv") 
+### to manpulate it you need to store it as something (I suggest using df)
+
+### to figure out what variables are called pass the dataset you made to the function names()
+### names(df) this will display the names of each column
+### the one we are interested in are just called democrat and republican
+### you can also call head(df) to see the first few rows of the dataset
+
+### Once you created the dataset you can the pass variables to a function
+### just like we did previously, but write out the whole thing: df$democrat
+```
+
+```{r df-solution, eval=FALSE}
+### The file is named "state_party.csv" so to load it use read.csv("state_party.csv") 
+### to manpulate it you need to store it as something (I suggest using df)
+
+df <- read.csv("state_party.csv")
+
+### to figure out what variables are called pass the dataset you made to the
+### function names(): names(df) this will display the names of each column
+### the one we are interested in are just called democrats and republicans
+
+names(df)
+
+### Once you created the dataset you can the pass variables to a function
+### just like we did previously, but write out the whole thing: df$democrat
+
+sum(df$democrat)
+```
+
+
+```{r df-check, eval=FALSE}
+ex() %>% {
+  check_function(., "sum")
+}
+```
+
+
+## Notes on read.csv 
+
+A few final notes on using data. 
+
+1) In order to load a file using `read.csv()` you first have to tell R where to look on your computer. To do this you will need to use `setwd()`. In `setwd()` you need to place the path to your file. This might look like: `"/users/kevinreuning/dropbox"` or `"C:/users/kevinreuning/dropbox"`. 
+
+2) Sometimes vectors in datasets have missing values. Theses show up as `NA` when you call them. A lot of R functions do not know what to do with missing values so you have to tell it what to do. To do this you _usually_ add `, na.rm=T` to a function call. Below I demonstrate both of these.
+
+**Instructions**:
+
+No assignment for this one, just look at what I did to `setwd()` and to use a function on a vector with missing values. 
+
+After you run the code just hit submit answer to finish this chapter.
+
+
+```{r final-note-setup}
+tmp.df <- read.csv("https://www.kevinreuning.com/assets/state_party.csv")
+
+write.csv(tmp.df, "state_party.csv", row.names=F)
+rm(list=ls())
+```
+
+```{r final-note, exercise=TRUE}
+### This is where you would set the work direct
+### This is what a Mac directory looks like, where NAME is your username
+## setwd("/Users/NAME/Documents")  
+
+### This is what a Windows directory looks like, where NAME is your username
+## setwd("C:/Users/NAME/Documents")  
+df <- read.csv("state_party.csv")
+
+df$hs_dem_prop_all ## has a missing value
+
+sum(df$hs_dem_prop_all) ## doesn't provide a result
+
+sum(df$hs_dem_prop_all, na.rm=T) ## drops the missing value 
+```
+
+
+
+
+## Mean and Median
+
+R has functions that can easily compute the mean and median of a vector. The function for the mean is `mean()` and the function for median is `median()`.
+
+**Instructions**:
+
+For this assignment you will have to load the dataset `"state_party.csv"` again and then calculate the mean and median of the percentage of democrats in a state (the variables are called democrat and republican).
+
+Remember to load data you need to call read.csv and save the output: `df <- read.csv("state_party.csv")` and then you can access the variables in the dataset using the `$`.
+
+
+```{r mean-and-median-setup}
+
+tmp.df <- read.csv("https://www.kevinreuning.com/assets/state_party.csv")
+
+write.csv(tmp.df, "state_party.csv", row.names=F)
+rm(list=ls())
+
+```
+
+
+```{r mean-and-median, exercise=TRUE}
+df <- read.csv("state_party.csv")
+
+
+```
+
+```{r mean-and-median-solution, eval=FALSE}
+df <- read.csv("state_party.csv")
+
+mean(df$democrat)
+median(df$democrat)
+
+mean(df$republican)
+median(df$republican)
+```
+
+```{r mean-and-median-check, eval=FALSE}
+ex() %>% {
+  check_function(., "mean") 
+  check_function(., "median") 
+  check_output_expr(., "mean(df$democrat)")
+  check_output_expr(., "median(df$democrat)")
+  check_output_expr(., "mean(df$republican)")
+  check_output_expr(., "median(df$republican)")
+
+}
+```
+
+
+## Standard Deviation
+
+Next, you can use `sd()` to find the standard deviation of a vector.
+
+Along with the percentage of Democrats/Republicans in a state the data has the percentage of state legislators that are Democratic and Republican. These variables are called `hs_dem_prop_all` and `hs_rep_prop_all`
+
+**Instructions**:
+
+For this assignment using the proportion of Democrats: 
+1. Find the mean.
+2. Find the standard deviation.
+
+Also note, Nebraska (which is in the data) has a non-partisan legislature so it does not have a value for Republicans and Democrats. You will need to tell R to ignore this when you calculate the mean and standard deviation.
+
+```{r sd-hint-1, eval=FALSE}
+Remember to ignore missing observations use `na.rm=T`
+```
+
+```{r sd-setup}
+tmp.df <- read.csv("https://www.kevinreuning.com/assets/state_party.csv")
+
+write.csv(tmp.df, "state_party.csv", row.names=F)
+rm(list=ls())
+```
+
+```{r sd, exercise=TRUE}
+df <- read.csv("state_party.csv")
+```
+
+```{r sd-solution, eval=FALSE}
+
+df <- read.csv("state_party.csv")
+
+mean(df$hs_dem_prop_all, na.rm=T)
+sd(df$hs_dem_prop_all, na.rm=T)
+```
+
+```{r sd-check, eval=FALSE}
+ex() %>% {
+  check_function(., "mean") %>% check_arg("na.rm") %>% check_equal()
+  check_function(., "sd") %>% check_arg("na.rm") %>% check_equal()
+  check_output_expr(., "sd(df$hs_dem_prop_all, na.rm=T)")
+  check_output_expr(., "mean(df$hs_dem_prop_all, na.rm=T)")
+
+}
+```
+
+
+## Number of Obs and the Range
+
+In addition to calculating the central tendencies of a variable we often want to let people know the number of observations we have and the range of values the variable can take on. 
+
+Remember, some of our data might be missing in any variable and we do NOT want to count that. In order to calculate the number of observations then we first drop missing observations and then counting how long the vector is that remains. This first step is done using `na.omit()` which removes observations that are missing. You then use `length()` to count how long the returning vector is `length(na.omit(x))`
+
+In order to calculate the maximum and minimum value we can use the `range()` function. This works just like the `mean()` and `median()` functions above. 
+
+**Instructions**:
+
+Calculate the maximum and the minimum values of `hs_rep_prop_all` and the number of observations for that variable. 
+
+```{r nobs-setup}
+tmp.df <- read.csv("https://www.kevinreuning.com/assets/state_party.csv")
+
+write.csv(tmp.df, "state_party.csv", row.names=F)
+rm(list=ls())
+```
+
+```{r nobs, exercise=TRUE}
+df <- read.csv("state_party.csv")
+
+
+```
+
+
+```{r nobs-solution, eval=FALSE}
+df <- read.csv("state_party.csv")
+
+
+length(na.omit(df$hs_rep_prop_all))
+range(df$hs_rep_prop_all, na.rm=T)
+```
+
+```{r nobs-check, eval=FALSE}
+ex() %>% {
+  check_function(., "na.omit")
+  check_function(., "length")
+  check_function(., "range" ) %>% check_arg("na.rm") %>% check_equal()
+}
+
+```
+
+
+
+
+## Frequency and Proportion Tables 
+All the above only really works well for interval data. For nominal and ordinal variables we want to calculate frequency tables and proportion tables. This is done with the `table()` and `prop.table()` functions. `table()` will create a frequency table out of the variable you give it while `prop.table()` will take a frequency table and make it into proportions instead. 
+
+**Instructions:**
+
+There is a variable called `leg_control` in the dataset we are using. It lists if Democrats or Republicans control the lower chamber. Calculate a frequency table for this and a proportion table. You can calculate the proportion table by either nesting functions: `prop.table(table(x))` where x is the variable of interest or saving the output from `table()` and passing that output to `prop.table()`. 
+
+```{r freq-setup}
+tmp.df <- read.csv("https://www.kevinreuning.com/assets/state_party.csv")
+
+write.csv(tmp.df, "state_party.csv", row.names=F)
+rm(list=ls())
+```
+
+```{r freq, exercise=TRUE}
+df <- read.csv("state_party.csv")
+
+
+```
+
+
+```{r freq-solution, eval=FALSE}
+df <- read.csv("state_party.csv")
+
+
+table(df$leg_control)
+prop.table(table(df$leg_control))
+```
+
+```{r freq-check, eval=FALSE}
+ex() %>% {
+  check_function(., "table")
+  check_function(., "prop.table" )
+}
+
+```

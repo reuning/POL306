@@ -1,0 +1,13 @@
+name: chapter2
+title: chapter2
+username:
+account: kreuning
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 974477
+bundleId: 2826002
+url: https://kreuning.shinyapps.io/chapter2/
+when: 1582581725.77129
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: ANES_Lim.csv
