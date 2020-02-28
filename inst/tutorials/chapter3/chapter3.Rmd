@@ -13,7 +13,7 @@ library(testwhat)
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 tutorial_options(exercise.checker = testwhat::testwhat_learnr)
 
-df <- read.csv("https://www.kevinreuning.com/assets/state_cig.csv")
+df <- POL306::state_cig_df
 
 
 ```
@@ -52,7 +52,7 @@ names(df)
 ```
 
 ```{r histogram-solution, eval=FALSE}
-df <- read.csv("https://www.kevinreuning.com/assets/state_cig.csv")
+df <- POL306::state_cig_df
 
 names(df)
 
@@ -85,7 +85,7 @@ names(df)
 ```
 
 ```{r density-solution, eval=FALSE}
-df <- read.csv("https://www.kevinreuning.com/assets/state_cig.csv")
+df <- POL306::state_cig_df
 
 names(df)
 
@@ -125,7 +125,7 @@ names(df)
 ```
 
 ```{r scatter-plots-solution, eval=FALSE}
-df <- read.csv("https://www.kevinreuning.com/assets/state_cig.csv")
+df <- POL306::state_cig_df
 
 names(df) 
 
@@ -170,7 +170,7 @@ names(df)
 ```
 
 ```{r linear-solution, eval=FALSE}
-df <- read.csv("https://www.kevinreuning.com/assets/state_cig.csv")
+df <- POL306::state_cig_df
 
 names(df)
 
@@ -213,7 +213,7 @@ summary(mod)
 ```
 
 ```{r linear-2-solution, eval=FALSE}
-df <- read.csv("https://www.kevinreuning.com/assets/state_cig.csv")
+df <- POL306::state_cig_df
 
 names(df)
 
@@ -246,7 +246,7 @@ plot(y=df$cig_tax, x=df$liberal)
 ```
 
 ```{r linear-plot-solution, eval=FALSE}
-df <- read.csv("https://www.kevinreuning.com/assets/state_cig.csv")
+df <- POL306::state_cig_df
 
 names(df)
 

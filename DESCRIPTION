@@ -14,7 +14,9 @@ LazyData: true
 Suggests: 
     learnr (>= 0.9.2.1)
 Imports: 
-  testwhat
-Remotes:
-  datacamp/testwhat
+    testwhat,
+    POL306 (>= 0.0.0.9000)
+Remotes: 
+    datacamp/testwhat,
+    reuning/POL306
 RoxygenNote: 6.1.1
