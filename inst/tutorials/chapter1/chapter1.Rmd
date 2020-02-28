@@ -1,9 +1,7 @@
 ---
 title: 'Introduction to R'
 description: 'Today we are going to learn the basics of R. '
-
 output: learnr::tutorial
-theme: sandstone
 runtime: shiny_prerendered
 ---
 

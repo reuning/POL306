@@ -1,8 +1,7 @@
 ---
 title: 'Functions, Central Tendencies, and More'
 description: ""
-output: learnr::tutorial:
-theme: sandstone
+output: learnr::tutorial
 runtime: shiny_prerendered
 ---
 
