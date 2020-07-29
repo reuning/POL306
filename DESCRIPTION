@@ -15,6 +15,4 @@ Suggests:
     learnr (>= 0.9.2.1)
 Imports: 
     testwhat
-Remotes: 
-    datacamp/testwhat,
-RoxygenNote: 7.0.0
+RoxygenNote: 7.1.1
