@@ -1,6 +1,6 @@
 ---
 title: Logistic Regression
-description: ""
+description: "How to estimate and interpret logistic regression"
 output:
   learnr::tutorial:
   theme: sandstone
@@ -13,7 +13,7 @@ library(testwhat)
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 tutorial_options(exercise.checker = testwhat::testwhat_learnr)
 
-df <- read.csv("https://www.kevinreuning.com/assets/tax_supp.csv")
+df <- POL306::tax_supp ## Ignore this
 
 ```
 
@@ -48,7 +48,7 @@ names(df)
 ```
 
 ```{r logit-solution, eval=FALSE}
-df <- read.csv("https://www.kevinreuning.com/assets/tax_supp.csv")
+df <- POL306::tax_supp ## Ignore this
 
 names(df)
 
@@ -95,7 +95,7 @@ names(df)
 ```
 
 ```{r pred-solution, eval=FALSE}
-df <- read.csv("https://www.kevinreuning.com/assets/tax_supp.csv")
+df <- POL306::tax_supp ## Ignore this
 
 names(df)
 
@@ -146,7 +146,7 @@ names(df)
 ```
 
 ```{r predmv-solution, eval=FALSE}
-df <- read.csv("https://www.kevinreuning.com/assets/tax_supp.csv")
+df <- POL306::tax_supp ## Ignore this
 
 names(df)
 
@@ -200,7 +200,7 @@ mod <- glm(mill_tax~pid7_interv + male, data=df, family=binomial)
 ```
 
 ```{r diff-solution, eval=FALSE}
-df <- read.csv("https://www.kevinreuning.com/assets/tax_supp.csv")
+df <- POL306::tax_supp ## Ignore this
 
 names(df)
 

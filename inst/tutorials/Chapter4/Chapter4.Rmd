@@ -1,6 +1,6 @@
 ---
 title: "Hypothesis Testing and Residuals"
-description: ""
+description: "How to calciluate CI and examine our residuals"
 output:
   learnr::tutorial:
     theme: sandstone
@@ -12,7 +12,7 @@ library(learnr)
 library(testwhat)
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 tutorial_options(exercise.checker = testwhat::testwhat_learnr)
-df <- POL306::state_cig_df
+df <- POL306::state_cig
 
 ```
 
@@ -34,7 +34,7 @@ names(df)
 ```
 
 ```{r linear-2-solution, eval=FALSE}
-df <- read.csv("https://www.kevinreuning.com/assets/state_cig.csv")
+df <- POL306::state_cig ### Ignore this
 
 names(df)
 
@@ -71,7 +71,7 @@ mod <- lm(cig_tax~liberal, data=df)
 ```
 
 ```{r resids-solution, eval=FALSE}
-df <- read.csv("https://www.kevinreuning.com/assets/state_cig.csv")
+df <- POL306::state_cig ### Ignore this
 
 names(df)
 
