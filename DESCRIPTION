@@ -11,10 +11,10 @@ Description: R Tutorial for POL 306 Applied Research Methods at Miami University
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Suggests: 
-    learnr (>= 0.9.2.1)
 Imports: 
-    testwhat
+    learnr (>= 0.9.2.1),
+    testwhat,
+    knitr
 Remotes:
     datacamp/testwhat
 RoxygenNote: 7.1.1
