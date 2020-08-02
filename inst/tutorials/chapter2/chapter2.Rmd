@@ -141,9 +141,9 @@ You are going to load it, and then calculate the sum of the democrat variable: `
 
 
 ```{r df-setup}
-tmp.df <- POL306::state_party
-write.csv(tmp.df, "state_party.csv", row.names=F)
-rm(list=ls())
+# tmp.df <- POL306::state_party
+# write.csv(tmp.df, "state_party.csv", row.names=F)
+# rm(list=ls())
 ```
 
 
@@ -202,9 +202,9 @@ After you run the code just hit submit answer to finish this chapter.
 
 
 ```{r final-note-setup}
-tmp.df <- POL306::state_party
-write.csv(tmp.df, "state_party.csv", row.names=F)
-rm(list=ls())
+# tmp.df <- POL306::state_party
+# write.csv(tmp.df, "state_party.csv", row.names=F)
+# rm(list=ls())
 ```
 
 ```{r final-note, exercise=TRUE}
@@ -238,10 +238,9 @@ Remember to load data you need to call read.csv and save the output: `df <- read
 
 
 ```{r mean-and-median-setup}
-
-tmp.df <- POL306::state_party
-write.csv(tmp.df, "state_party.csv", row.names=F)
-rm(list=ls())
+# tmp.df <- POL306::state_party
+# write.csv(tmp.df, "state_party.csv", row.names=F)
+# rm(list=ls())
 
 ```
 
@@ -294,9 +293,9 @@ Remember to ignore missing observations use `na.rm=T`
 ```
 
 ```{r sd-setup}
-tmp.df <- POL306::state_party
-write.csv(tmp.df, "state_party.csv", row.names=F)
-rm(list=ls())
+# tmp.df <- POL306::state_party
+# write.csv(tmp.df, "state_party.csv", row.names=F)
+# rm(list=ls())
 ```
 
 ```{r sd, exercise=TRUE}
@@ -335,9 +334,9 @@ In order to calculate the maximum and minimum value we can use the `range()` fun
 Calculate the maximum and the minimum values of `hs_rep_prop_all` and the number of observations for that variable. 
 
 ```{r nobs-setup}
-tmp.df <- POL306::state_party
-write.csv(tmp.df, "state_party.csv", row.names=F)
-rm(list=ls())
+# tmp.df <- POL306::state_party
+# write.csv(tmp.df, "state_party.csv", row.names=F)
+# rm(list=ls())
 ```
 
 ```{r nobs, exercise=TRUE}
@@ -375,9 +374,9 @@ All the above only really works well for interval data. For nominal and ordinal 
 There is a variable called `leg_control` in the dataset we are using. It lists if Democrats or Republicans control the lower chamber. Calculate a frequency table for this and a proportion table. You can calculate the proportion table by either nesting functions: `prop.table(table(x))` where x is the variable of interest or saving the output from `table()` and passing that output to `prop.table()`. 
 
 ```{r freq-setup}
-tmp.df <- POL306::state_party
-write.csv(tmp.df, "state_party.csv", row.names=F)
-rm(list=ls())
+# tmp.df <- POL306::state_party
+# write.csv(tmp.df, "state_party.csv", row.names=F)
+# rm(list=ls())
 ```
 
 ```{r freq, exercise=TRUE}
