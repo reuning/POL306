@@ -13,7 +13,7 @@ install.packages("remotes")
 ~~~~ R
 remotes::install_github("reuning/POL306")
 ~~~~
-5. You will see more text again, although tis time there will be a lot more. Generally, as long as there is no red text it should be fine.
+5. You will see more text again, although this time there will be a lot more. Generally, as long as there is no red text it should be fine. It might ask your permission to install things from source, if so tell it yes. 
 6. Run one last line to check to make sure everything worked. You should see a message welcoming you to the tutorial, if you see "Error in library(POL306) : there is no package called ‘kevin’" then contact me.
 ~~~~ R
 library(POL306)
