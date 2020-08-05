@@ -22,7 +22,7 @@ We are going to start by looking at just two functions: `sum`, and `sort`. Each 
 
 The functions that we will use here are relatively simple:
 - sum: returns the summation of all the numbers in the vector you give it. 
-- sort: returns the vector you gave it but reordered from highest to lowest.
+- sort: returns the vector you gave it but reordered from lowest to highest.
 
 *One other thing:* The `#` is a way of telling R to ignore something. I use these to leave comments in code. Anything preceded by `#` will be ignored by R. 
 
@@ -30,7 +30,7 @@ The functions that we will use here are relatively simple:
 
 1. Start by defining a variable called `x` that is a vector that contains the numbers 12, 4, 3, 2, 5, and -4. 
 2. Next calculate the sum of all the numbers in `x` and store it as `tot`. 
-3. Finally use the `sort` function to rewrite `x` so that it is in order from highest to lowest (you will have to save this new `x` overtop of the old `x`).
+3. Finally use the `sort` function to rewrite `x` so that it is in order from lowest to highest (you will have to save this new `x` overtop of the old `x`).
 
 
 ```{r functions, exercise=TRUE}
