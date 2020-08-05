@@ -269,7 +269,7 @@ ex() %>% {
 
 Variables are useful in R because we can easily manipulate vectors without having to type them over and over again. You can do all the same sort of operations we did last week, but on variables. 
 
-For example, the current population of Ohio is 11,658,609 if you want to figure out what 10% or 20% of the population is you can store the population as a variable and then multiply it by .1 and .25.
+For example, the current population of Ohio is 11,658,609 if you want to figure out what 10% or 25% of the population is you can store the population as a variable and then multiply it by .1 and .25.
 
 **Instructions**:
 
