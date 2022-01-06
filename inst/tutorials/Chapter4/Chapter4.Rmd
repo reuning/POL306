@@ -1,9 +1,7 @@
 ---
-title: "Hypothesis Testing and Residuals"
-description: "How to calciluate CI and examine our residuals"
-output:
-  learnr::tutorial:
-    theme: sandstone
+title: "Bivariate Regression in R"
+description: "Bivariate regression and examining residuals in R"
+output: learnr::tutorial
 runtime: shiny_prerendered
 ---
 
@@ -13,25 +11,92 @@ library(testwhat)
 
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 tutorial_options(exercise.checker = testwhat_learnr)
+
 df <- POL306::state_cig
 
 ```
 
+## A Note on Data
 
+We are still using the same data as we did in the plots lesson. Below is a reminder of what is in it. 
 
-## Confidence Intervals
+Throughout this tutorial we will use a dataset that looks at healthcare spending, cigarette taxes, and a variety of political variables. The unit of analysis for it is the state-year, and the data comes from 2001 to 2014. The variables are:
 
-R has a simple function called `confint()` that will calculate the confidence interval of all the variables in your model. It defaults to a 95% confidence interval but you can change that using `level = ` in the function call. 
+- `cig_tax` is the tax (in dollars) on a packet of cigarettes. 
+- `female_leg` is the percentage of women in the state legislature.
+- `liberal` is the percentage of voters that identify as liberal.
+- `dem_gov` is an indicator that is 1 if the governor is a Democrat and 0 if they are not.
+- `healthspendpc` is the amount spent perperson on healthcare. 
+- `state` is the name of the state
+- `year` is the year. 
+
+## Bivariate Linear Regression
+
+The most important function you will use for estimating linear regression models is `lm()`. This will expect a formula and will output something called a model object that you will want to save so you can then manipulate it. 
+
+For example, if you have a dataframe called `data.frame` and three variables named: `var1` and `var2`. If you want to estimate a linear regression with `var1` as the dependent variable and `var2` as the independent variable you would write:
+
+```
+mod <- lm(var1 ~ var2, data=data.frame)
+```
+
+This won't output anything but you can look at the results using `summary()` like this:
+
+`summary(mod)`
 
 **Instructions**:
 
-We are going to recreate the model we've been using looking at the relationship between cigarette taxes and the percentage of liberals in a state. Remember, cigarette taxes is the DV and percentage liberals in the state is the IV. 
+We will start by just estimating a linear regression of the cigarette tax (the DV) as a function of the percent of liberals in a state. The variables are all in the `df` dataset and are: `cig_tax`, and `liberal`. 
 
-Once you have the model estimated you will then calculate the confidence interval. 
+You should save the linear model as `mod` (like in the example above) and then output the results using the `summary()` function.
+
+
+
+```{r linear, exercise=TRUE}
+names(df) 
+```
+
+```{r linear-solution, eval=FALSE}
+df <- POL306::state_cig ### Ignore this
+
+names(df)
+
+mod <- lm(cig_tax~liberal, data=df)
+summary(mod)
+```
+
+```{r linear-check, eval=FALSE}
+ex() %>% {
+  check_function(., "lm" ) %>%
+    check_arg("formula") %>% check_equal()
+  check_function(., "summary")
+}
+```
+
+
+
+## Linear Regression Extended
+
+The reason that we save the `lm()` object is that there are a lot of things we can do with it after we are done. Here are a few things:
+
+- `coef(mod)` will create a vector of just the coefficients, which can be useful if we want to do something to them. 
+- `mod$residuals` is a vector of all the residuals for the regression. We could easily plot them with `plot(mod$residuals)` (we'll see why this is important later)
+- `nobs(mod)` calculates the number of observations in the final dataset.
+- `mod$fitted.values` is a vector of the predictions from the regression.
+
+**Instructions**:
+
+Using the `mod` we made in the last activity (I included the code here), do the following:
+
+1. Get the number of the observations included in the model. 
+2. Plot the residuals.
+
 
 ```{r linear-2, exercise=TRUE}
 names(df)
 
+mod <- lm(cig_tax~liberal, data=df)
+summary(mod)
 ```
 
 ```{r linear-2-solution, eval=FALSE}
@@ -40,30 +105,30 @@ df <- POL306::state_cig ### Ignore this
 names(df)
 
 mod <- lm(cig_tax~liberal, data=df)
-confint(mod)
+summary(mod)
 
+nobs(mod)
+plot(mod$residuals)
 ```
 
 ```{r linear-2-check, eval=FALSE}
 ex() %>% {
-  check_function(., "lm" ) %>% check_arg("formula") %>% check_equal()
-  check_function(., "confint")
+  check_function(., "plot")
+  check_function(., "nobs" )
 }
 
 ```
 
 
 
+## Plotting Residuals vs Predicted
 
-## Plotting Residuals
+We previously saw how to plot residuals using `plot(mod$residuals)`. This plots them on the y-axis with the observation number on the x-axis. We also are interested in plotting our residuals as a function of the the predicted value. This can be accomplished by using `mod$fitted.values` as well as `mod$residuals` and the `plot()` function. Remember you want the y-axis to have the residuals (you can specify which variable goes on which axis using `y=` and `x=`) and the x-axis should have the predicted values.
 
-In the last assignment we saw how to plot residuals using `plot(mod$residuals)`. This plots them on the Y axis with the observation number on the X axis. We also are interested in plotting our residuals as a function of the the predicted value. This can be accomplished by using `mod$fitted.values`.  
 
 **Instructions**:
 
-Still using the same model, look at the residuals. We want to do two things:
-1) Look at the residuals just by observation number.
-2) Look at the residuals compared to the predicted value. 
+Still using the same model, now look at the residuals compared to the predicted value. You will have to include both variables in the call to `plot()`. 
 
 ```{r resids, exercise=TRUE}
 names(df)
@@ -77,14 +142,12 @@ df <- POL306::state_cig ### Ignore this
 names(df)
 
 mod <- lm(cig_tax~liberal, data=df)
-plot(mod$residuals)
 plot(y=mod$residuals, x=mod$fitted.values)
 ```
 
 ```{r resids-check, eval=FALSE}
 ex() %>% {
-  check_function(., "plot", index=1 ) %>% check_arg("x") %>% check_equal
-  check_function(., "plot", index=2 ) %>% {
+  check_function(., "plot") %>% {
     check_arg(., "x") %>% check_equal
     check_arg(., "y") %>% check_equal
   }
@@ -94,18 +157,32 @@ ex() %>% {
 ```
 
 
+## Plotting a Regression Line
+
+You can add the regression line to a scatter plot by using the `abline()` function after you make a scatter plot. You just have to put the model object (`mod`) into the `abline()` function. I've recreated the regression you looked at before with a scatter plot. Now you have to add a regression line. 
 
 
+```{r linear-plot, exercise=TRUE}
+names(df)
 
+mod <- lm(cig_tax~liberal, data=df)
+plot(y=df$cig_tax, x=df$liberal)
+```
 
+```{r linear-plot-solution, eval=FALSE}
+df <- POL306::state_cig ### Ignore this
 
+names(df)
 
+mod <- lm(cig_tax~liberal, data=df)
+plot(y=df$cig_tax, x=df$liberal)
+abline(mod)
+```
 
+```{r linear-plot-check, eval=FALSE}
+ex() %>% 
+  check_function("abline")
 
-
-
-
-
-
+```
 
 

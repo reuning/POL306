@@ -122,8 +122,6 @@ ex() %>% check_function("sort") %>% check_arg("decreasing") %>% check_equal()
 ```
 
 
-
-
 ## Variables and Datasets
 
 We usually do not build all of our variables by hand. Instead we use saved files to import them as datasets. 
