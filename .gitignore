@@ -2,3 +2,5 @@
 .Rhistory
 inst/tutorials/*/rsconnect/*
 .DS_Store
+class_scripts
+.RData

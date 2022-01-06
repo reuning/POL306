@@ -1,3 +1,24 @@
+setwd("~/Dropbox/Teaching_Kevin/POL306/class_scripts/")
+
+df <- read.csv("qog_oecd_cs_jan21.csv")
+df$gea_ea1524f
+df$wdi_fertility
+mod <- lm(cpds_vt ~ cpds_enps, data=df)
+summary(mod)
+
+png("turnout_v_party.png", height=4, width=6, units="in", res=200)
+plot(y=df$cpds_vt, x=df$cpds_enps, xlab="Effective Number of Parties",
+     ylab="Voter Turnout", main="Turnout vs Number of Parties")
+abline(mod)
+dev.off()
+
+stargazer::stargazer(mod, se =NA,
+                     covariate.labels = c("Effective Number of Parties", "Intercept"),
+                     dep.var.labels = "Turnout",
+                     no.space = T, omit.stat = c("rsq", "adj.rsq", "f", "ser"), type="html")
+
+
+
 df <- read.csv("https://www.kevinreuning.com/assets/state_cig.csv")
 
 
@@ -71,7 +92,7 @@ text(x=coef(mod)[2], y=50, pos=3, labels="Estimated Value",
      srt=90)
 dev.off()
 
-pdf("/Users/kevinreuning/Dropbox/Teaching_Kevin/Fall_2019/POL_306/Lectures/images/crit_vals.pdf",
+pdf("C:/Users/reunink/Dropbox/Teaching_Kevin/Spring_2021/POL_306/Lectures/images/crit_vals.pdf",
     height=6, width=8)
 plot(y=dnorm(seq(-3,3,by=.1)),
      x=seq(-3,3, by=.1), type='l',
@@ -85,17 +106,17 @@ plot(y=dnorm(seq(-3,3,by=.1)),
      ylab='Density',
      xlab="Value",
      main="t-distribution")
-polygon(x=c(1.644854,seq(1.644854, 3, by=.1)),
-        y=c(0.004992899,dnorm(seq(1.644854, 3, by=.1))),
+polygon(x=rev(c(-1.644854,seq(-1.644854, -3, by=-.1))),
+        y=rev(c(0.004992899,dnorm(seq(1.644854, 3, by=.1)))),
         col='gray')
-abline(v=1.644854)
-arrows(y1=dnorm(2), x1=2,
-       y0=0.15, x0=2.25
+abline(v=-1.644854)
+arrows(y1=dnorm(2), x=-2,
+       y0=0.15, x0=-2.25
        )
-text(x=2.25,  y=.15,
+text(x=-2.25,  y=.15,
      label='0.05 Area', pos=3)
-text(x=1.644854,  pos=3, y=.2,
-     label='1.644854 Crit Value', xpd=T,
+text(x=-1.644854,  pos=3, y=.2,
+     label='-1.644854 Crit Value', xpd=T,
      srt=270)
 
 
