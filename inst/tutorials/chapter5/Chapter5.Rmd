@@ -100,3 +100,43 @@ ex() %>% {
 
 
 
+## Looking at Substantive Effects
+We can used CIs to examine the substantive relationship between an independent variable and its dependent variable. The way we discussed in class was by calculating how a standard deviation change in the independent variable would change the dependent variable. To do this we multiple the coefficient or a 95% CI by the standard deviation of the independent variable. We can calculate the latter using `sd()`. 
+
+Before multiplying, we can make things bit simpler. `confint()` calculates the confidence interval for both the intercept and the coefficient of our IV and returns it as a 2 by 2 matrix. The CI for the IV is in the second row. If we run `confint(mod)[2,]` we'll just get the second row. 
+
+**Instructions**
+Estimate the effect of a 1 standard deviation change in `liberal` on `cig_tax` and save that as the variable `eff`. You can then compare that to the standard deviation of `cig_tax`. 
+
+
+```{r substantive, exercise=TRUE}
+names(df)
+
+mod <- lm(cig_tax~liberal, data=df)
+
+```
+
+```{r substantive-solution, eval=FALSE}
+df <- POL306::state_cig ### Ignore this
+
+names(df)
+
+mod <- lm(cig_tax~liberal, data=df)
+confint(mod)[2,]
+eff <- sd(df$liberal, na.rm=T) * confint(mod)[2,]
+eff
+sd(df$cig_tax, na.rm=T)
+
+```
+
+```{r substantive-check, eval=FALSE}
+ex() %>% {
+  check_function(., "lm" ) %>% check_arg("formula") %>% check_equal()
+  check_function(., "confint")
+  check_object(., "eff") %>% check_equal()
+  check_function(., "sd")
+}
+
+```
+
+
