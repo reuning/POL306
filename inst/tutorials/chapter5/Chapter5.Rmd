@@ -101,7 +101,7 @@ ex() %>% {
 
 
 ## Looking at Substantive Effects
-We can used CIs to examine the substantive relationship between an independent variable and its dependent variable. The way we discussed in class was by calculating how a standard deviation change in the independent variable would change the dependent variable. To do this we multiple the coefficient or a 95% CI by the standard deviation of the independent variable. We can calculate the latter using `sd()`. 
+We can used CIs to examine the substantive relationship between an independent variable and its dependent variable. The way we discussed in class was by calculating how a standard deviation change in the independent variable would change the dependent variable. To do this we multiply the coefficient or a 95% CI by the standard deviation of the independent variable. We can calculate the latter using `sd()`. 
 
 Before multiplying, we can make things bit simpler. `confint()` calculates the confidence interval for both the intercept and the coefficient of our IV and returns it as a 2 by 2 matrix. The CI for the IV is in the second row. If we run `confint(mod)[2,]` we'll just get the second row. 
 
