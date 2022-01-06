@@ -1,6 +1,7 @@
 .Rproj.user
 .Rhistory
 inst/tutorials/*/rsconnect/*
-.DS_Store
+*.DS_Store
 class_scripts
 .RData
+.DS_Store

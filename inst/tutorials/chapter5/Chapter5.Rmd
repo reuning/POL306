@@ -65,8 +65,6 @@ ex() %>% {
 
 
 
-
-
 ## Confidence Intervals
 
 R has a simple function called `confint()` that will calculate the confidence interval of all the variables in your model. It defaults to a 95% confidence interval but you can change that using `level = ` in the function call. 
@@ -98,18 +96,6 @@ ex() %>% {
 }
 
 ```
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
