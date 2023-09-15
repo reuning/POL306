@@ -28,114 +28,239 @@ Throughout this tutorial we will use a dataset that looks at healthcare spending
 - `state` is the name of the state
 - `year` is the year. 
 
+## ggplot 
+
+In this exercise we are going to use the package [ggplot2](https://ggplot2.tidyverse.org/) to make plots. This library is widly used to make plots and has a lot of customizability that makes it powerful. It also uses a specific way of creating plots that involves adding together functions.
+
+Each ggplot2 call though starts with the function `ggplot()` and includes the data you are going to use in the `data=` attribute. 
+
+**Instructions:**
+
+Start now by running loading the ggplot2 library `library(ggplot2)` and running the initial function `ggplot(data=df)` (df is the data we are using here). 
+
+
+```{r ggplot, exercise=TRUE}
+```
+
+```{r ggplot-solution, eval=FALSE}
+df <- POL306::state_cig ### Ignore this
+library(ggplot2)
+ggplot(data=df)
+```
+
+```{r ggplot-check, eval=FALSE}
+ex() %>% check_function("ggplot") %>% {
+  check_arg(., "data")
+}
+```
+
 
 ## Histogram
 
-First we will briefly explore histograms in R. 
+You successfully made a grey box! Now lets start filling that grey box with a plot. You add `geom_*()` functions to build your plot, and in them you tell R what variables to use. You do that by mapping aesthetics to different variables in your data. 
 
-Histograms are done by using the function `hist()`. Like most of our functions it expects that the first thing it encounters will be the variable you want a histogram of. It also has a lot of other attributes:
+For example, a histogram is `geom_histogram()` and if you want it to make a histogram of the cigarette tax on the x axis you'd write: `geom_histogram(mapping=aes(x=cig_tax))`. Note that we are assigning an aesthetics (`aes()`) to a `mapping=` for `geom_histogram()`. 
 
-- `xlab=` or `ylab=`: Will change the label used for the y or x axis. Be sure to put whatever you want it to be in quotes: `xlab="Unemployment Rate"`
-- `main=`: Will change the main title in a similar way to `xlab` or `ylab`
-- `break = ...:` Will set the way the data is binned. Can take a lot of options, most common though is the number of bins you want. To make your histogram have 5 boxes you set break=5
+Putting this together with what we have before is: 
+
+```
+ggplot(data=df) + geom_histogram(mapping=aes(x=cig_tax))
+```
 
 **Instructions**:
 
-Make a histogram of `female_leg` and change the xaxis and the main title.
+Create a histogram of the percentage of female legislators in a state (`female_leg`)
 
 
 
 ```{r histogram, exercise=TRUE}
-names(df)
+library(ggplot2)
 ```
 
 ```{r histogram-solution, eval=FALSE}
 df <- POL306::state_cig ### Ignore this
 
-names(df)
-
-hist(df$female_leg, xlab="Proportion Women in Legislature", main="Histogram of Women in State-Leg") 
+library(ggplot2)
+ggplot(data=df) + geom_histogram(mapping=aes(x=female_leg))
+ 
 ```
 
 ```{r histogram-check, eval=FALSE}
-ex() %>% check_function("hist") %>% {
-  check_arg(., "xlab")
-  check_arg(., "main")
+
+ex() %>% {
+  check_function(., "ggplot") %>% check_arg("data") %>% check_equal()
+  check_function(., "aes") %>% {
+    check_arg(., "x") %>% check_equal(eval = FALSE) 
+  }
+  check_function(., "geom_histogram")
 }
 ```
 
 ## Density Plots
 
-Now we will explore density plots in R. 
-
-Density plots require using two functions at once `density()` and `plot()`. You can nest them so that they happen at the same time like: `plot(density(x))` where x is what you want to plot the the density of. You can change attributes of the plot using the same attributes from the `hist()` function as long as they are outside the first set of parentheses: `plot(density(x), xlab="X Label")`. 
-
-You can see how different weighting schemes impact the density plot by setting `adjust=` to something. The default would be: `plot(density(x, adjust=1))`.
+The powerful thing with `ggplot2` is that you can easily switch the way your data is displayed by changing the `geom_*()` function. Along with `geom_histogram()` there is an `geom_density()` that creates a density plot. 
 
 **Instructions**:
 
-Make a density plot of `female_leg` and change the `adjust` argument to something other than 1.
-
+Switch your histogram of percentage of female legislators into a density plot. 
 
 
 ```{r density, exercise=TRUE}
-names(df)
+library(ggplot2)
 ```
 
 ```{r density-solution, eval=FALSE}
 df <- POL306::state_cig ### Ignore this
 
-names(df)
+library(ggplot2)
+ggplot(data=df) + geom_density(mapping=aes(x=female_leg))
 
-plot(density(df$female_leg, adjust=.5, na.rm=T))
 ```
 
 ```{r density-check, eval=FALSE}
-ex() %>% check_function("density") %>% {
-  check_arg(., "adjust")
- }
+ex() %>% {
+  check_function(., "ggplot") %>% check_arg("data") %>% check_equal()
+  check_function(., "aes") %>% {
+    check_arg(., "x") %>% check_equal(eval = FALSE) 
+  }
+  check_function(., "geom_density")
+}
 ```
 
+## Customizing Labels and Titles
 
-## Scatter Plots
-
-Plots in R can be highly customized. Scatter plots all use the same function though: `plot()`. `plot()` expects one or two vectors that it will plot. If you want to ensure which one is on the y axis, and which is on the x axis you can explicitly identify them: `plot(y=, x=)`. Beyond this there are additional arguments you can call:
-
-- `xlab=` or `ylab=`: Will change the label used for the y or x axis. Be sure to put whatever you want it to be in quotes: `xlab="Unemployment Rate"`
-- `main=`: Will change the main title in a similar way to `xlab` or `ylab`
-- `pch=`: Can be used to changes the symbol used for points. You can set it to any integer between 0 and 25. For example `pch=2` makes the symbols into open triangles. The default is `pch=1`. 
-- `col=`: Will set the color used for the points. You can pick from a lot of basic colors like: red, green, blue, yellow, orange, etc. Be sure to put the color name in quotes. 
-- `type=`: Will change the type of plot. The default `type="p"` will make a scatter plot, while `type="l"` will make a line plot. 
-
-Putting this all together would look something like:
-```
-plot(x=df$var1, y=df$var2, pch=2, col="red", main="Var 2 vs Var 1", xlab="Var 1",ylab="Var 2") 
-```
+To create titles and labels for your plot you use the `labs()` function which takes arguments for the x axis (`x=`), the y axis (`y=`) and the main title (`title=`). For example to set the main title you would add on `labs(title="Histogram of Variable")`. Be sure to put the language you want to use in quotations, and separate each argument with a comma (if you use multiple). 
 
 **Instructions**:
 
-Make a plot between `liberal` and `cig_tax`. Change `pch`, `col`, and `main`.
+Provide an x and y label and a title for the histogram of female legislators. B
 
+```{r label, exercise=TRUE}
+library(ggplot2)
+```
+
+```{r label-solution, eval=FALSE}
+df <- POL306::state_cig ### Ignore this
+
+library(ggplot2)
+ggplot(data=df) + geom_histogram(mapping=aes(x=female_leg)) + 
+  labs(y="Frequency", x="Percent Female", title="Histogram of Percent Female Legislators")
+
+```
+
+```{r label-check, eval=FALSE}
+ex() %>% {
+  check_function(., "ggplot") %>% check_arg("data") %>% check_equal()
+  check_function(., "aes") %>% {
+    check_arg(., "x") %>% check_equal(eval = FALSE) 
+  }
+  check_function(., "geom_histogram") 
+  check_function(., "labs") %>%{
+    check_arg(., "x")
+    check_arg(., "y")
+    check_arg(., "title")
+  }
+}
+```
+
+## Scatter Plots
+
+Making a scatter plot in `ggplot2` is relatively easy as well, you just need to switch to `geom_point()` (because you are making points) and add a y variable along with your x variable (something like `aes(x=var1, y=var2))`. 
+
+**Instructions**:
+
+Make a scatter plot with `cig_tax` on the y axis and `female_leg` on the x. Be sure to set labels for the x and y axis along with a title for the plot. 
 
 
 ```{r scatter-plots, exercise=TRUE}
-names(df) 
+library(ggplot2)
 ```
 
 ```{r scatter-plots-solution, eval=FALSE}
 df <- POL306::state_cig ### Ignore this
 
-names(df) 
+ggplot(data=df) + geom_point(mapping=aes(x=female_leg, y=cig_tax)) + 
+  labs(y="Cigarette Tax", x="Percent Female", 
+       title="Cig Tax vs Female Legislature")
 
-plot(x=df$liberal, y=df$cig_tax, pch=2, col="red", main="Liberal vs Cigarette Tax")
 ```
 
 ```{r scatter-plots-check, eval=FALSE}
 ex() %>% {
-  check_function(., "plot" ) %>% {
-    check_arg(., "pch")
-    check_arg(., "col")
-    check_arg(., "main")
-  } 
+  check_function(., "ggplot") %>% check_arg("data") %>% check_equal()
+  check_function(., "geom_point")
+  check_function(., "aes") %>% {
+    check_arg(., "x") %>% check_equal(eval = FALSE) 
+    check_arg(., "y") %>% check_equal(eval = FALSE) 
+  }
+  check_function(., "labs") %>%{
+    check_arg(., "x")
+    check_arg(., "y")
+    check_arg(., "title")
+  }
+}
+```
+
+
+
+
+## Other Aesthetics 
+
+ggplot has a wide variety of ways to customize a plot, and these can be used to either show more information about your observations _or_ just to make things look pretty.
+
+For example you can change the colors of the points using the `color=` argument. If you set this in the `aes()` function and assign it to a variable then it will color the points based on that variable. You could also just set it outside the `aes()` function but inside the `geom_point()` function to any color like `color="green"` to set all the points to green. Concretely the difference looks like: 
+
+```
+### Color the dots based on how liberal a state is
+ggplot(data=df) + 
+  geom_point(mapping=aes(x=female_leg, y=cig_tax, 
+                          color=liberal)) 
+```
+
+```
+### Color all the dots red
+ggplot(data=df) + 
+  geom_point(mapping=aes(x=female_leg, y=cig_tax), 
+                          color="red") 
+```
+
+Along with color you can set: 
+
+- `alpha=` the transparency (0 to 1)
+- `size=` the size of point (0 and higher)
+- `fill=` the color of the fill (doesn't apply to everything)
+
+And more 
+
+
+**Instructions**:
+
+Start with your scatter plot with `cig_tax` on the y axis and `female_leg` on the x and then set the color to the `year` variable, but make all dots a little transparent by setting `alpha=0.5`. 
+
+
+```{r aes, exercise=TRUE}
+library(ggplot2)
+ggplot(data=df) + geom_point(mapping=aes(x=female_leg, y=cig_tax))
+
+```
+
+```{r aes-solution, eval=FALSE}
+df <- POL306::state_cig ### Ignore this
+
+ggplot(data=df) + geom_point(mapping=aes(x=female_leg, y=cig_tax, 
+                                         color=year), alpha=0.5)  
+
+
+```
+
+```{r aes-check, eval=FALSE}
+ex() %>% {
+  check_function(., "ggplot") %>% check_arg("data") %>% check_equal()
+  check_function(., "geom_point") %>% check_arg("alpha") %>% check_equal()
+  check_function(., "aes") %>% {
+    check_arg(., "x") %>% check_equal(eval = FALSE) 
+    check_arg(., "y") %>% check_equal(eval = FALSE) 
+    check_arg(., "color") %>% check_equal(eval = FALSE) 
+  }
 }
 ```
